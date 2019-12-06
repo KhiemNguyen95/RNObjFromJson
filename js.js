@@ -1,22 +1,24 @@
 let exampleOut = `
-export const #userObj = {
+const #nameObj = {
   /**
    * get value by key
    * @param {*} keyObj: key data
    * @param {*} data: obj
-   * @param {*} defaultVale: value when empty
+   * @param {*} defaultValue: value when empty
    */
-  valueByKey: function(keyObj, data, defaultVale = '') {
+  valueByKey: function(keyObj, data, defaultValue = '') {
     if (data[keyObj]) {
       return data[keyObj];
     } else {
-      return defaultVale;
+      return defaultValue;
     }
   },
   keyObj: {
 #key
   },
-};`;
+}; 
+export default #nameObj;
+`;
 
 function getData(){
 	let inputText = document.getElementById("inputJson").value;
@@ -24,7 +26,11 @@ function getData(){
 		// 
 	consoleJson(NameObj,inputText)
 }
-
+/**
+ * print in consonle obj
+ * @param {*} nameObj 
+ * @param {*} dataIn 
+ */
 function consoleJson(nameObj,dataIn){
 	try 
 	{
@@ -39,11 +45,22 @@ function consoleJson(nameObj,dataIn){
 		let outKey = "";
 		keys.forEach(item => {
 			outKey = outKey + "    " + item + ": '"+ item + "',\n";
-			consoleJson(item,inputJson[item]);
+			
+			if (isArray(inputJson[item])){
+				//data la mang
+				console.log("arr" + "" + inputJson[item][0]);
+				consoleJson(item,"" + inputJson[item][0]);
+			}
+			else
+			{
+				//
+        consoleJson(item,inputJson[item]);
+			}
 		});
 		//fill data to example
 		let jsonOut = exampleOut
-		jsonOut = jsonOut.replace("#userObj",nameObj)
+		jsonOut = jsonOut.replace("#nameObj",nameObj)
+		jsonOut = jsonOut.replace("#nameObj",nameObj)
 		jsonOut = jsonOut.replace("#key",outKey)
 		// log result
 		console.log("name obj:" + nameObj + ".js")
@@ -51,6 +68,10 @@ function consoleJson(nameObj,dataIn){
 	}
 	catch (err) 
 	{
-		//console.log(err);
+		console.log(err);
 	}
+}
+
+function isArray(what) {
+	return Object.prototype.toString.call(what) === '[object Array]';
 }
